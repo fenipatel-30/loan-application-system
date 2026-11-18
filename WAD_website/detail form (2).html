@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Loan Application Form</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fb;
+            color: #333;
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 40px auto;
+            background-color: white;
+            padding: 35px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+
+        h2 {
+            text-align: center;
+            color: #1e3a5f;
+            margin-bottom: 30px;
+        }
+
+        h3 {
+            color: #1e3a5f;
+            border-bottom: 2px solid #1e3a5f;
+            padding-bottom: 8px;
+            margin-top: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .document-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f4f7fb;
+            border-radius: 8px;
+        }
+
+        .document-box {
+            background-color: white;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+
+        .document-box label {
+            color: #1e3a5f;
+        }
+
+        .document-note {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        button {
+            display: block;
+            margin: 30px auto 0;
+            padding: 13px 35px;
+            background-color: #1e3a5f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0d6efd;
+        }
+
+        .back {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back a {
+            text-decoration: none;
+            color: #1e3a5f;
+            font-weight: bold;
+        }
+
+        .error {
+            color: red;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .success {
+            color: green;
+            background-color: #e8f5e9;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            display: none;
+        }
+
+        @media (max-width: 700px) {
+
+            .form-container {
+                width: 90%;
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="form-container">
+
+    <h2>Loan Application Form</h2>
+
+
+    <form id="loanForm">
+
+        <h3>Personal Details</h3>
+
+
+        <div class="form-group">
+
+            <label>Full Name</label>
+
+            <input type="text"
+                   id="fullName"
+                   placeholder="Enter your full name">
+
+            <div id="nameError" class="error"></div>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Email</label>
+
+            <input type="email"
+                   id="email"
+                   placeholder="Enter your email">
+
+            <div id="emailError" class="error"></div>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Mobile Number</label>
+
+            <input type="tel"
+                   id="mobile"
+                   placeholder="Enter your mobile number"
+                   maxlength="10">
+
+            <div id="mobileError" class="error"></div>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Date of Birth</label>
+
+            <input type="date"
+                   id="dob">
+
+            <div id="dobError" class="error"></div>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Address</label>
+
+            <textarea
+                id="address"
+                placeholder="Enter your complete address"></textarea>
+
+            <div id="addressError" class="error"></div>
+
+        </div>
+
+        <h3>Loan Details</h3>
+
+
+        <div class="form-group">
+
+            <label>Select Loan Type</label>
+
+            <select id="loanType">
+
+                <option value="">
+                    -- Select Loan Type --
+                </option>
+
+                <option value="Personal Loan">
+                    Personal Loan
+                </option>
+
+                <option value="Home Loan">
+                    Home Loan
+                </option>
+
+                <option value="Education Loan">
+                    Education Loan
+                </option>
+
+                <option value="Business Loan">
+                    Business Loan
+                </option>
+
+                <option value="Vehicle Loan">
+                    Vehicle Loan
+                </option>
+
+            </select>
+
+            <div id="loanTypeError" class="error"></div>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Loan Amount</label>
+
+            <input type="number"
+                   id="loanAmount"
+                   placeholder="Enter required loan amount">
+
+            <div id="loanAmountError" class="error"></div>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Loan Tenure</label>
+
+            <select id="tenure">
+
+                <option value="">
+                    -- Select Tenure --
+                </option>
+
+                <option>1 Year</option>
+                <option>2 Years</option>
+                <option>3 Years</option>
+                <option>5 Years</option>
+                <option>10 Years</option>
+                <option>15 Years</option>
+                <option>20 Years</option>
+
+            </select>
+
+            <div id="tenureError" class="error"></div>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Monthly Income</label>
+
+            <input type="number"
+                   id="income"
+                   placeholder="Enter your monthly income">
+
+            <div id="incomeError" class="error"></div>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Employment Type</label>
+
+            <select id="employment">
+
+                <option value="">
+                    -- Select Employment Type --
+                </option>
+
+                <option>Salaried</option>
+                <option>Self Employed</option>
+                <option>Business Owner</option>
+                <option>Student</option>
+
+            </select>
+
+            <div id="employmentError" class="error"></div>
+
+        </div>
+
+
+        <div class="document-section">
+
+            <h3>Upload Required Documents</h3>
+
+
+            <div class="document-box">
+
+                <label>Aadhaar Card</label>
+
+                <input type="file"
+                       id="aadhaar"
+                       accept=".pdf,.jpg,.jpeg,.png">
+
+                <div class="document-note">
+                    Upload PDF, JPG, JPEG or PNG
+                </div>
+
+                <div id="aadhaarError" class="error"></div>
+
+            </div>
+
+            <div class="document-box">
+
+                <label>PAN Card</label>
+
+                <input type="file"
+                       id="pan"
+                       accept=".pdf,.jpg,.jpeg,.png">
+
+                <div class="document-note">
+                    Upload PDF, JPG, JPEG or PNG
+                </div>
+
+                <div id="panError" class="error"></div>
+
+            </div>
+
+            <div class="document-box">
+
+                <label>Address Proof</label>
+
+                <input type="file"
+                       id="addressProof"
+                       accept=".pdf,.jpg,.jpeg,.png">
+
+                <div class="document-note">
+                    Upload PDF, JPG, JPEG or PNG
+                </div>
+
+                <div id="addressProofError" class="error"></div>
+
+            </div>
+
+
+            <div class="document-box">
+
+                <label>Income Proof / Salary Slip</label>
+
+                <input type="file"
+                       id="incomeProof"
+                       accept=".pdf,.jpg,.jpeg,.png">
+
+                <div class="document-note">
+                    Upload PDF, JPG, JPEG or PNG
+                </div>
+
+                <div id="incomeProofError" class="error"></div>
+
+            </div>
+
+            <div class="document-box">
+
+                <label>Bank Statement</label>
+
+                <input type="file"
+                       id="bankStatement"
+                       accept=".pdf,.jpg,.jpeg,.png">
+
+                <div class="document-note">
+                    Upload PDF, JPG, JPEG or PNG
+                </div>
+
+                <div id="bankStatementError" class="error"></div>
+
+            </div>
+
+            <div class="document-box">
+
+                <label>Passport Size Photograph</label>
+
+                <input type="file"
+                       id="photo"
+                       accept=".jpg,.jpeg,.png">
+
+                <div class="document-note">
+                    Upload JPG, JPEG or PNG
+                </div>
+
+                <div id="photoError" class="error"></div>
+
+            </div>
+
+            <div class="document-box">
+
+                <label>Additional Document</label>
+
+                <input type="file"
+                       id="additional"
+                       accept=".pdf,.jpg,.jpeg,.png">
+
+                <div class="document-note">
+                    Upload if required
+                </div>
+
+            </div>
+
+        </div>
+
+        <button type="submit">
+            Submit Loan Application
+        </button>
+
+
+        <div id="successMessage" class="success"></div>
+
+
+    </form>
+
+    <div class="back">
+
+        <a href="layout (1).html">
+            ← Back to Home
+        </a>
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+    document.getElementById("loanForm").addEventListener("submit",
+    async function(event) {
+
+        event.preventDefault();
+
+        let name =
+            document.getElementById("fullName").value.trim();
+
+        let email =
+            document.getElementById("email").value.trim();
+
+        let mobile =
+            document.getElementById("mobile").value.trim();
+
+        let dob =
+            document.getElementById("dob").value;
+
+        let address =
+            document.getElementById("address").value.trim();
+
+        let loanType =
+            document.getElementById("loanType").value;
+
+        let loanAmount =
+            document.getElementById("loanAmount").value;
+
+        let tenure =
+            document.getElementById("tenure").value;
+
+        let income =
+            document.getElementById("income").value;
+
+        let employment =
+            document.getElementById("employment").value;
+
+        document.querySelectorAll(".error").forEach(function(error) {
+            error.innerHTML = "";
+        });
+
+        document.getElementById("successMessage").style.display = "none";
+
+
+        let valid = true;
+
+        if (name === "") {
+
+            document.getElementById("nameError").innerHTML =
+                "Please enter your full name.";
+
+            valid = false;
+
+        }
+        else if (name.length < 3) {
+
+            document.getElementById("nameError").innerHTML =
+                "Name must contain at least 3 characters.";
+
+            valid = false;
+        }
+        let emailPattern =
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (email === "") {
+
+            document.getElementById("emailError").innerHTML =
+                "Please enter your email.";
+
+            valid = false;
+
+        }
+        else if (!emailPattern.test(email)) {
+
+            document.getElementById("emailError").innerHTML =
+                "Please enter a valid email address.";
+
+            valid = false;
+        }
+
+        if (mobile === "") {
+
+            document.getElementById("mobileError").innerHTML =
+                "Please enter your mobile number.";
+
+            valid = false;
+
+        }
+        else if (!/^[0-9]{10}$/.test(mobile)) {
+
+            document.getElementById("mobileError").innerHTML =
+                "Mobile number must contain exactly 10 digits.";
+
+            valid = false;
+        }
+
+        if (dob === "") {
+
+            document.getElementById("dobError").innerHTML =
+                "Please select your date of birth.";
+
+            valid = false;
+
+        }
+        else {
+
+            let birthDate = new Date(dob);
+
+            let today = new Date();
+
+            let age =
+                today.getFullYear() - birthDate.getFullYear();
+
+            let month =
+                today.getMonth() - birthDate.getMonth();
+
+            if (
+                month < 0 ||
+                (month === 0 &&
+                today.getDate() < birthDate.getDate())
+            ) {
+                age--;
+            }
+
+            if (age < 18) {
+
+                document.getElementById("dobError").innerHTML =
+                    "Applicant must be at least 18 years old.";
+
+                valid = false;
+            }
+
+        }
+
+        if (address === "") {
+
+            document.getElementById("addressError").innerHTML =
+                "Please enter your complete address.";
+
+            valid = false;
+        }
+
+        if (loanType === "") {
+
+            document.getElementById("loanTypeError").innerHTML =
+                "Please select a loan type.";
+
+            valid = false;
+        }
+
+        if (loanAmount === "") {
+
+            document.getElementById("loanAmountError").innerHTML =
+                "Please enter the loan amount.";
+
+            valid = false;
+
+        }
+        else if (Number(loanAmount) <= 0) {
+
+            document.getElementById("loanAmountError").innerHTML =
+                "Loan amount must be greater than 0.";
+
+            valid = false;
+        }
+
+        if (tenure === "") {
+
+            document.getElementById("tenureError").innerHTML =
+                "Please select loan tenure.";
+
+            valid = false;
+        }
+
+        if (income === "") {
+
+            document.getElementById("incomeError").innerHTML =
+                "Please enter your monthly income.";
+
+            valid = false;
+
+        }
+        else if (Number(income) <= 0) {
+
+            document.getElementById("incomeError").innerHTML =
+                "Monthly income must be greater than 0.";
+
+            valid = false;
+        }
+
+        if (employment === "") {
+
+            document.getElementById("employmentError").innerHTML =
+                "Please select your employment type.";
+
+            valid = false;
+        }
+
+
+        function validateFile(id, errorId, required) {
+
+            let fileInput =
+                document.getElementById(id);
+
+            let file =
+                fileInput.files[0];
+
+            if (!file && required) {
+
+                document.getElementById(errorId).innerHTML =
+                    "Please upload this document.";
+
+                valid = false;
+
+                return;
+            }
+
+            if (file) {
+
+                let allowedTypes = [
+                    "application/pdf",
+                    "image/jpeg",
+                    "image/png"
+                ];
+
+                if (!allowedTypes.includes(file.type)) {
+
+                    document.getElementById(errorId).innerHTML =
+                        "Only PDF, JPG, JPEG or PNG files are allowed.";
+
+                    valid = false;
+                }
+
+                if (file.size > 5 * 1024 * 1024) {
+
+                    document.getElementById(errorId).innerHTML =
+                        "File size must be less than 5 MB.";
+
+                    valid = false;
+                }
+
+            }
+
+        }
+
+        validateFile(
+            "aadhaar",
+            "aadhaarError",
+            true
+        );
+
+        validateFile(
+            "pan",
+            "panError",
+            true
+        );
+
+        validateFile(
+            "addressProof",
+            "addressProofError",
+            true
+        );
+
+        validateFile(
+            "incomeProof",
+            "incomeProofError",
+            true
+        );
+
+        validateFile(
+            "bankStatement",
+            "bankStatementError",
+            true
+        );
+
+        validateFile(
+            "photo",
+            "photoError",
+            true
+        );
+
+        validateFile(
+            "additional",
+            "",
+            false
+        );
+
+        if (valid) {
+
+            const application = {
+                fullName: name,
+                email,
+                mobile,
+                dob,
+                address,
+                loanType,
+                loanAmount: Number(loanAmount),
+                tenure,
+                monthlyIncome: Number(income),
+                employment,
+                documents: ["aadhaar", "pan", "addressProof", "incomeProof", "bankStatement", "photo", "additional"]
+                    .filter((id) => document.getElementById(id).files[0])
+                    .map((id) => ({ field: id, fileName: document.getElementById(id).files[0].name })),
+            };
+            let applicationId;
+            try {
+                const response = await fetch("/api/applications", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(application)
+                });
+                const result = await response.json();
+                if (!response.ok) {
+                    document.getElementById("successMessage").innerHTML = result.error;
+                    document.getElementById("successMessage").style.display = "block";
+                    return;
+                }
+                applicationId = result.applicationId;
+            } catch {
+                document.getElementById("successMessage").innerHTML =
+                    "Could not reach the database. Start the site using python server.py.";
+                document.getElementById("successMessage").style.display = "block";
+                return;
+            }
+
+
+            document.getElementById("successMessage").innerHTML =
+                "Loan application submitted successfully! " +
+                "<br><br>" +
+                "Your Application ID is: " +
+                "<strong>" +
+                applicationId +
+                "</strong>" +
+                "<br><br>" +
+                "Please save this ID for status tracking.";
+
+
+            document.getElementById("successMessage").style.display =
+                "block";
+
+            document.getElementById("loanForm").reset();
+
+        }
+
+    });
+
+</script>
+
+
+</body>
+
+</html>

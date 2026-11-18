@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Login - Loan Application System</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            background-color: #f4f7fb;
+        }
+
+        .login-box {
+            width: 350px;
+            margin: 80px auto;
+            padding: 25px;
+            background-color: white;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        h1 {
+            color: #1e3a5f;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        button {
+            background-color: #1e3a5f;
+            color: white;
+            padding: 10px 30px;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0d6efd;
+        }
+
+        a {
+            color: #1e3a5f;
+        }
+
+        .register-link {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 10px 18px;
+            border: 1px solid #1e3a5f;
+            border-radius: 5px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .register-link:hover {
+            background-color: #1e3a5f;
+            color: white;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+
+        .success {
+            color: green;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+    
+
+
+<div class="login-box">
+
+    <h1>Login</h1>
+
+
+    <form id="loginForm">
+
+        <input
+            type="email"
+            id="email"
+            placeholder="Enter Email">
+
+        <br>
+
+        <p id="emailError" class="error"></p>
+
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Enter Password">
+
+        <br>
+
+        <p id="passwordError" class="error"></p>
+
+
+        <button type="submit">
+            Login
+        </button>
+
+
+    </form>
+
+
+    <p id="successMessage" class="success"></p>
+
+
+    <p>
+        Don't have an account?
+    </p>
+
+    <a class="register-link" href="registration form (1).html">
+        Create an Account
+    </a>
+
+
+
+</div>
+
+
+<script>
+
+    document.getElementById("loginForm").addEventListener("submit", async function(event) {
+
+        event.preventDefault();
+
+        let email = document.getElementById("email").value.trim();
+
+        let password = document.getElementById("password").value.trim();
+
+        let emailError = document.getElementById("emailError");
+
+        let passwordError = document.getElementById("passwordError");
+
+        let successMessage = document.getElementById("successMessage");
+
+
+        emailError.innerHTML = "";
+
+        passwordError.innerHTML = "";
+
+        successMessage.innerHTML = "";
+
+
+        let valid = true;
+
+
+        if (email === "") {
+
+            emailError.innerHTML = "Please enter your email.";
+
+            valid = false;
+
+        }
+        else if (!email.includes("@") || !email.includes(".")) {
+
+            emailError.innerHTML = "Please enter a valid email.";
+
+            valid = false;
+
+        }
+
+
+        if (password === "") {
+
+            passwordError.innerHTML = "Please enter your password.";
+
+            valid = false;
+
+        }
+        else if (password.length < 6) {
+
+            passwordError.innerHTML =
+                "Password must be at least 6 characters.";
+
+            valid = false;
+
+        }
+
+
+        if (valid) {
+
+            try {
+                const response = await fetch("/api/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, password })
+                });
+                const result = await response.json();
+                if (!response.ok) {
+                    successMessage.style.color = "red";
+                    successMessage.innerHTML = result.error;
+                    return;
+                }
+                successMessage.style.color = "green";
+                successMessage.innerHTML = "Login successful! Welcome, " + result.name + ".";
+                window.location.href = "layout (1).html";
+            } catch {
+                successMessage.style.color = "red";
+                successMessage.innerHTML = "Could not reach the database. Start the site using python server.py.";
+            }
+
+        }
+
+    });
+
+</script>
+
+
+</body>
+
+</html>

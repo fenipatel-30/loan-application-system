@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Register - Loan Application System</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            background-color: #f4f7fb;
+        }
+
+        .register-box {
+            width: 400px;
+            margin: 40px auto;
+            padding: 25px;
+            background-color: white;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        h1 {
+            color: #1e3a5f;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 8px;
+        }
+
+        button {
+            background-color: #1e3a5f;
+            color: white;
+            padding: 10px 30px;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0d6efd;
+        }
+
+        a {
+            color: #1e3a5f;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            margin: 2px;
+        }
+
+        .success {
+            color: green;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="register-box">
+
+    <h1>Registration</h1>
+
+
+    <form id="registerForm">
+
+
+        <input
+            type="text"
+            id="name"
+            placeholder="Full Name">
+
+        <br>
+
+        <p id="nameError" class="error"></p>
+
+
+        <input
+            type="email"
+            id="email"
+            placeholder="Email">
+
+        <br>
+
+        <p id="emailError" class="error"></p>
+
+
+        <input
+            type="tel"
+            id="mobile"
+            placeholder="Mobile Number">
+
+        <br>
+
+        <p id="mobileError" class="error"></p>
+
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Create Password">
+
+        <br>
+
+        <p id="passwordError" class="error"></p>
+
+
+        <input
+            type="password"
+            id="confirmPassword"
+            placeholder="Confirm Password">
+
+        <br>
+
+        <p id="confirmPasswordError" class="error"></p>
+
+
+        <button type="submit">
+            Register
+        </button>
+
+    </form>
+
+
+    <p id="successMessage" class="success"></p>
+
+
+    <p>
+        Already have an account?
+    </p>
+
+    <a href="login form (1).html">
+        Login Here
+    </a>
+
+
+</div>
+
+
+<script>
+
+    document.getElementById("registerForm").addEventListener("submit", async function(event) {
+
+        event.preventDefault();
+
+
+        let name = document.getElementById("name").value.trim();
+
+        let email = document.getElementById("email").value.trim();
+
+        let mobile = document.getElementById("mobile").value.trim();
+
+        let password = document.getElementById("password").value;
+
+        let confirmPassword =
+            document.getElementById("confirmPassword").value;
+
+
+
+        let nameError = document.getElementById("nameError");
+
+        let emailError = document.getElementById("emailError");
+
+        let mobileError = document.getElementById("mobileError");
+
+        let passwordError = document.getElementById("passwordError");
+
+        let confirmPasswordError =
+            document.getElementById("confirmPasswordError");
+
+        let successMessage =
+            document.getElementById("successMessage");
+
+
+        nameError.innerHTML = "";
+        emailError.innerHTML = "";
+        mobileError.innerHTML = "";
+        passwordError.innerHTML = "";
+        confirmPasswordError.innerHTML = "";
+        successMessage.innerHTML = "";
+
+
+        let valid = true;
+
+
+        if (name === "") {
+
+            nameError.innerHTML =
+                "Please enter your full name.";
+
+            valid = false;
+        }
+
+        if (email === "") {
+
+            emailError.innerHTML =
+                "Please enter your email.";
+
+            valid = false;
+
+        }
+        else if (!email.includes("@") || !email.includes(".")) {
+
+            emailError.innerHTML =
+                "Please enter a valid email.";
+
+            valid = false;
+        }
+
+
+        if (mobile === "") {
+
+            mobileError.innerHTML =
+                "Please enter your mobile number.";
+
+            valid = false;
+
+        }
+        else if (!/^[0-9]{10}$/.test(mobile)) {
+
+            mobileError.innerHTML =
+                "Mobile number must be 10 digits.";
+
+            valid = false;
+        }
+
+
+        if (password === "") {
+
+            passwordError.innerHTML =
+                "Please create a password.";
+
+            valid = false;
+
+        }
+        else if (password.length < 6) {
+
+            passwordError.innerHTML =
+                "Password must be at least 6 characters.";
+
+            valid = false;
+        }
+
+        if (confirmPassword === "") {
+
+            confirmPasswordError.innerHTML =
+                "Please confirm your password.";
+
+            valid = false;
+
+        }
+        else if (password !== confirmPassword) {
+
+            confirmPasswordError.innerHTML =
+                "Passwords do not match.";
+
+            valid = false;
+        }
+
+
+        if (valid) {
+
+            try {
+                const response = await fetch("/api/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name, email, mobile, password })
+                });
+                const result = await response.json();
+                if (!response.ok) {
+                    emailError.innerHTML = result.error;
+                    return;
+                }
+                successMessage.innerHTML = result.message;
+                document.getElementById("registerForm").reset();
+            } catch {
+                successMessage.style.color = "red";
+                successMessage.innerHTML = "Could not reach the database. Start the site using python server.py.";
+            }
+
+        }
+
+    });
+
+</script>
+
+
+</body>
+
+</html>

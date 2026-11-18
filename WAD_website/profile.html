@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Loan Application System</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: Arial, sans-serif; color: #263445; background: #f4f7fb; }
+        header { background: #1e3a5f; color: white; padding: 22px max(24px, calc((100% - 1080px) / 2)); display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+        header h1 { margin: 0; font-size: 24px; }
+        nav { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
+        nav a, nav button { color: white; background: transparent; border: 0; padding: 5px 0; font: inherit; text-decoration: none; cursor: pointer; }
+        nav a:hover, nav button:hover { text-decoration: underline; }
+        main { width: min(1080px, calc(100% - 32px)); margin: 34px auto 60px; }
+        .intro { margin-bottom: 24px; }
+        .intro h2 { color: #1e3a5f; margin: 0 0 7px; font-size: 30px; }
+        .intro p { margin: 0; color: #5f6d7d; }
+        .panel { background: white; border-radius: 10px; padding: 24px; margin-bottom: 24px; box-shadow: 0 3px 12px rgba(25, 53, 82, .08); }
+        .panel h3 { color: #1e3a5f; margin: 0 0 18px; }
+        .details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 18px; }
+        .detail-label { display: block; color: #687789; font-size: 13px; margin-bottom: 5px; }
+        .detail-value { font-weight: 600; overflow-wrap: anywhere; }
+        .application { border: 1px solid #dbe3ec; border-radius: 8px; padding: 20px; margin-top: 16px; }
+        .application:first-of-type { margin-top: 0; }
+        .application-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+        .application h4 { margin: 0 0 5px; color: #1e3a5f; font-size: 18px; }
+        .submitted { color: #657487; font-size: 13px; }
+        .badge { display: inline-block; border-radius: 999px; padding: 7px 12px; font-size: 13px; font-weight: bold; background: #fff2cf; color: #805900; white-space: nowrap; }
+        .badge.approved { color: #17643b; background: #dff5e8; }
+        .badge.rejected { color: #8a2630; background: #fde3e5; }
+        .status-details { margin: 16px 0 0; padding: 13px 15px; border-radius: 6px; background: #f4f7fb; line-height: 1.5; }
+        .documents { margin: 16px 0 0; color: #536274; font-size: 14px; }
+        .message { padding: 18px; border-radius: 7px; background: #f4f7fb; color: #536274; line-height: 1.5; }
+        .error { background: #fdebed; color: #8a2630; }
+        .apply-link { display: inline-block; margin-top: 13px; color: #1e3a5f; font-weight: bold; }
+        footer { background: #1e3a5f; color: white; text-align: center; padding: 18px; }
+        @media (max-width: 600px) { header { align-items: flex-start; flex-direction: column; } .panel { padding: 18px; } .application-head { flex-direction: column; } }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Loan Application System</h1>
+        <nav aria-label="Main navigation">
+            <a href="layout (1).html">Home</a>
+            <a href="detail form (2).html">Apply for Loan</a>
+            <button id="logoutButton" type="button">Log out</button>
+        </nav>
+    </header>
+    <main>
+        <section class="intro">
+            <h2>My Profile</h2>
+            <p>View your account information and track your loan applications.</p>
+        </section>
+        <div id="pageMessage" class="message">Loading your profile…</div>
+        <section id="profilePanel" class="panel" hidden>
+            <h3>Account Details</h3>
+            <div class="details-grid">
+                <div><span class="detail-label">Full name</span><span class="detail-value" id="profileName"></span></div>
+                <div><span class="detail-label">Email</span><span class="detail-value" id="profileEmail"></span></div>
+                <div><span class="detail-label">Mobile</span><span class="detail-value" id="profileMobile"></span></div>
+            </div>
+        </section>
+        <section id="applicationsPanel" class="panel" hidden>
+            <h3>My Loan Applications</h3>
+            <div id="applicationsList"></div>
+        </section>
+    </main>
+    <footer>© 2026 Loan Application System</footer>
+    <script>
+        const pageMessage = document.getElementById("pageMessage");
+        const setText = (parent, tag, className, value) => {
+            const element = document.createElement(tag);
+            if (className) element.className = className;
+            element.textContent = value || "Not provided";
+            parent.appendChild(element);
+            return element;
+        };
+        const addDetail = (container, label, value) => {
+            const cell = document.createElement("div");
+            setText(cell, "span", "detail-label", label);
+            setText(cell, "span", "detail-value", value);
+            container.appendChild(cell);
+        };
+        const formatDate = (value) => {
+            const date = new Date(value);
+            return Number.isNaN(date.getTime()) ? value : date.toLocaleString();
+        };
+        const money = (value) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(value);
+
+        function renderApplication(application) {
+            const card = document.createElement("article");
+            card.className = "application";
+            const heading = document.createElement("div");
+            heading.className = "application-head";
+            const headingText = document.createElement("div");
+            setText(headingText, "h4", "", application.loan_type + " · " + money(application.loan_amount));
+            setText(headingText, "div", "submitted", "Application ID: " + application.application_id + " · Submitted " + formatDate(application.submitted_at));
+            heading.appendChild(headingText);
+            const status = String(application.status || "Application Submitted");
+            const badge = setText(heading, "span", "badge", status);
+            if (status.toLowerCase().includes("approv")) badge.classList.add("approved");
+            if (status.toLowerCase().includes("reject") || status.toLowerCase().includes("declin")) badge.classList.add("rejected");
+            card.appendChild(heading);
+
+            const grid = document.createElement("div");
+            grid.className = "details-grid";
+            addDetail(grid, "Applicant", application.applicant_name);
+            addDetail(grid, "Email", application.email);
+            addDetail(grid, "Mobile", application.mobile);
+            addDetail(grid, "Date of birth", application.date_of_birth);
+            addDetail(grid, "Address", application.address);
+            addDetail(grid, "Loan tenure", application.tenure);
+            addDetail(grid, "Monthly income", money(application.monthly_income));
+            addDetail(grid, "Employment type", application.employment);
+            card.appendChild(grid);
+
+            const statusDetails = application.status_details ||
+                (status.toLowerCase().includes("approv") ? "Your application has been approved." :
+                 status.toLowerCase().includes("reject") || status.toLowerCase().includes("declin") ? "Your application was not approved. Contact the loan team for more information." :
+                 "Your application is awaiting review. Its status will appear here when updated.");
+            setText(card, "p", "status-details", statusDetails);
+            const documents = Array.isArray(application.documents) ? application.documents : [];
+            if (documents.length) setText(card, "p", "documents", "Documents submitted: " + documents.join(", "));
+            return card;
+        }
+
+        async function loadProfile() {
+            try {
+                const response = await fetch("/api/profile", { credentials: "same-origin" });
+                const result = await response.json();
+                if (response.status === 401) {
+                    window.location.replace("login form (1).html");
+                    return;
+                }
+                if (!response.ok) throw new Error(result.error || "Unable to load profile.");
+                document.getElementById("profileName").textContent = result.user.name;
+                document.getElementById("profileEmail").textContent = result.user.email;
+                document.getElementById("profileMobile").textContent = result.user.mobile;
+                document.getElementById("profilePanel").hidden = false;
+                pageMessage.hidden = true;
+                const list = document.getElementById("applicationsList");
+                if (!result.applications.length) {
+                    const empty = document.createElement("div");
+                    empty.className = "message";
+                    empty.append("You have not applied for a loan yet. ");
+                    const link = document.createElement("a");
+                    link.className = "apply-link";
+                    link.href = "detail form (2).html";
+                    link.textContent = "Apply for a loan";
+                    empty.appendChild(link);
+                    list.appendChild(empty);
+                } else {
+                    result.applications.forEach((application) => list.appendChild(renderApplication(application)));
+                }
+                document.getElementById("applicationsPanel").hidden = false;
+            } catch (error) {
+                pageMessage.classList.add("error");
+                pageMessage.textContent = error.message + " Make sure the site is running with python server.py.";
+            }
+        }
+
+        document.getElementById("logoutButton").addEventListener("click", async () => {
+            await fetch("/api/logout", { method: "POST", credentials: "same-origin" });
+            window.location.replace("login form (1).html");
+        });
+        loadProfile();
+    </script>
+</body>
+</html>

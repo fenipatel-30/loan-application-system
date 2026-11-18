@@ -1,0 +1,6 @@
+__pycache__/
+data/*.sqlite3
+data/*.sqlite3-journal
+**/node_modules/
+.env
+.env.*
