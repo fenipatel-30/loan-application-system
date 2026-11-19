@@ -2,6 +2,10 @@
 
 The website uses a local SQLite database. Python creates `data/loan_system.sqlite3` and its tables the first time the server starts. No external package installation is needed.
 
+## Deploy on Render
+
+The repository includes a `render.yaml` Blueprint that deploys the Python site from the `WAD_website` folder on Render's free web service plan. SQLite uses the service's temporary filesystem, so accounts and applications can be lost when the service restarts or redeploys. To preserve data, use a paid service with a persistent disk and set `DATABASE_PATH` under that disk's mount path. Render supplies the public HTTPS URL and port automatically.
+
 1. Open PowerShell in this project folder.
 2. Run `python server.py` (on Windows, `py server.py` also works).
 3. Open [http://127.0.0.1:8000](http://127.0.0.1:8000).

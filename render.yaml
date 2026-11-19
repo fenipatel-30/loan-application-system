@@ -2,14 +2,8 @@ services:
   - type: web
     name: loan-application-system
     runtime: python
-    plan: starter
+    plan: free
+    rootDir: WAD_website
     buildCommand: echo "No external dependencies to install"
     startCommand: python server.py
     healthCheckPath: /
-    envVars:
-      - key: DATABASE_PATH
-        value: /var/data/loan_system.sqlite3
-    disk:
-      name: loan-data
-      mountPath: /var/data
-      sizeGB: 1

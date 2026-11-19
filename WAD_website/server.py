@@ -254,8 +254,11 @@ class WebsiteHandler(SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
     initialize_db()
-    server = ThreadingHTTPServer(("127.0.0.1", 8000), WebsiteHandler)
-    print("Loan Application System running at http://127.0.0.1:8000")
+    host = os.environ.get("HOST", "0.0.0.0")
+    port = int(os.environ.get("PORT", "8000"))
+    server = ThreadingHTTPServer((host, port), WebsiteHandler)
+    browser_host = "localhost" if host in ("0.0.0.0", "::") else host
+    print(f"Loan Application System running at http://{browser_host}:{port}")
     try:
         server.serve_forever()
     except KeyboardInterrupt:
